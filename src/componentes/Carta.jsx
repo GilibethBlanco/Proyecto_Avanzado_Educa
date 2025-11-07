@@ -2,7 +2,9 @@ import React from 'react'
 
 function Carta() {
   return (
-    <div>Carta</div>
+    <div>
+      <h2>Carta</h2>
+      </div>
   )
 }
 

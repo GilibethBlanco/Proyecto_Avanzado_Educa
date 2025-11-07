@@ -2,7 +2,9 @@ import React from 'react'
 
 function VistaMazo() {
   return (
-    <div>VistaMazo</div>
+    <div>
+      <Carta/>
+    </div>
   )
 }
 
