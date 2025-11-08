@@ -7,9 +7,9 @@ function App() {
     <Carta numero={1}/>
     <Carta numero={2}/>
     <Carta numero={3}/>
-    <Carta numero={"k"}/>
-    <Carta numero={"j"}/>
-    <Carta numero={"q"}/>
+    <Carta numero={"K"}/>
+    <Carta numero={"J"}/>
+    <Carta numero={"Q"}/>
    </div>
   );
 }
