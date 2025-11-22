@@ -25,7 +25,7 @@ function Carta({
     <h3>
      {nombre} (#{numero})
     </h3>
-    <img src={imagen} alt={nombre}/>
+    <img src={imagen} alt={nombre} className='size-1/6 border-2 border-blue-500'/>
     <p>tipo: {tipo} </p>
     <p>ataque: {ataque} </p>
     <p>defensa: {defensa} </p>

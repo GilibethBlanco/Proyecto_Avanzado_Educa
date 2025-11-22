@@ -1,18 +1,13 @@
 import './App.css';
-import Carta from './Componentes/Carta';
+import VistaMazo from './Pantallas/VistaMazo';
 
 function App() {
   return (
    <div>
-    <Carta 
-    numero={1}
-    ataque={222}
-    nombre="malefica" 
-    defensa={100} 
-    descripcion="villana de Disney"
-    imagen="https://m.media-amazon.com/images/M/MV5BMjAwOTk2MGItZTlmYS00Yzk5LTgyNTYtMjkxY2FkZWI1NzcxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" 
-    tipo= "magico"
-    />
+      <VistaMazo/>
+      <button className='bg-green-400 border-solid border-black border-2 p-3 m-3 '>
+        Eliminar
+      </button>
    </div>
   );
 }
