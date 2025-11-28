@@ -3,12 +3,18 @@ import VistaMazo from './Pantallas/VistaMazo';
 
 function App() {
   return (
-   <div>
-      <VistaMazo/>
-      <button className='bg-green-400 border-solid border-black border-2 p-3 m-3 '>
-        Eliminar
-      </button>
-   </div>
+   <div className="min-h-screen bg-slate-900 text-slate-100 p-6 font-sans">
+            <header className="mb-10 border-b border-slate-700 pb-4">
+                <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-yellow-400 to-orange-500 uppercase tracking-widest">
+                    Mi Mazo
+                </h1>
+                <p className="text-slate-400 mt-1">
+                    Héroes de Marvel.
+                </p>
+            </header>
+            
+            <VistaMazo/>
+        </div>
   );
 }
 

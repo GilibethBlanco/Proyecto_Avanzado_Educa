@@ -2,37 +2,39 @@ import Carta from "../Componentes/Carta"
 
 function VistaMazo() {
   return (
-   <div>
+   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 justify-items-center">
+
     <Carta 
     numero={1}
-    ataque={222}
-    nombre="malefica" 
-    defensa={100} 
-    descripcion="villana de Disney"
-    imagen="https://m.media-amazon.com/images/M/MV5BMjAwOTk2MGItZTlmYS00Yzk5LTgyNTYtMjkxY2FkZWI1NzcxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"  
-    tipo= "magico"
+    nombre="Capitan America" 
+    imagen="https://cuadrosyretablos.com/wp-content/uploads/2022/08/cuadro-decorativo-universo-marvel-capitan-america.jpg"  
     />
 
     <Carta 
     numero={2}
-    ataque={100}
-    nombre="Ursula" 
-    defensa={50} 
-    descripcion="villana de Disney"
-    imagen="https://i.pinimg.com/236x/33/46/05/3346051aa0fafdfe43e21e868860178f.jpg" 
-    tipo= "magico"
+    nombre="Iron Man" 
+    imagen="https://i.pinimg.com/736x/1f/19/0b/1f190b0e9b4f44cf99777ea25c48a159.jpg" 
     />
 
     <Carta 
     numero={3}
-    ataque={100}
-    nombre="Scar" 
-    defensa={40} 
-    descripcion="villano de Disney"
-    imagen="https://static.wikia.nocookie.net/disney/images/c/c7/Scar.png" 
-    tipo= "cazador"
+    nombre="Black Widow"  
+    imagen="https://4kwallpapers.com/images/wallpapers/black-widow-scarlett-johansson-black-background-2020-movies-2560x2560-2705.jpg" 
+    />
+
+    <Carta 
+    numero={4}
+    nombre="Bruja Escarlata" 
+    imagen="https://www.smashmexico.com.mx/wp-content/uploads/2020/11/Avengers-Bruja-Escarlata-Scarlet-Witch-Historia-de-Marvel-poster.jpg" 
+    />
+
+     <Carta 
+    numero={4}
+    nombre="Spider-man" 
+    imagen="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0XnPOrguRalHjABq0zmTSm34Zj4D9O5f1c_DxrNiYXQ0AHepjg9tt9APt6efypbjOC00&usqp=CAU.jpg" 
     />
    </div>
+
   );
 }
 
