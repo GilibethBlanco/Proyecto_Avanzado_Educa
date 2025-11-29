@@ -9,11 +9,20 @@ type Props = {
   onSeleccionar: (carta: any) => void;
 };
 
-export default function Carta({ numero, nombre, imagen, onSeleccionar }: Props) {
+export default function Carta({ numero, nombre, imagen, ataque, defensa, vida, onSeleccionar }: Props) {
   return (
     <div
       className="flex flex-col items-center w-50 transition-transform duration-300 hover:scale-105 cursor-pointer"
-      onClick={() => onSeleccionar({ numero, nombre, imagen,})}
+      onClick={() =>
+        onSeleccionar({
+          numero,
+          nombre,
+          imagen,
+          ataque,
+          defensa,
+          vida,
+        })
+      }
     >
       <div className="relative w-full h-80 overflow-hidden rounded-lg shadow-lg border-2 border-gray-700 hover:border-red-500">
 
