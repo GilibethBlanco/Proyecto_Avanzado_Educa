@@ -76,13 +76,13 @@ export default function VistaCrearCarta({ onCerrar, onCrear, cartas }: Props) {
     const numeroCarta = cartas.length + 1;
 
     onCrear({
-      numero: numeroCarta,
-      nombre,
-      descripcion,
-      imagen,
-      ataque,
-      defensa,
-      vida,
+      idCard: numeroCarta,
+      name: nombre,
+      descritption: descripcion,
+      pictureUrl: imagen,
+      attack: ataque,
+      defense: defensa,
+      lifePoints: vida,
     });
 
     onCerrar();

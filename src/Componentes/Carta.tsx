@@ -16,18 +16,18 @@ export default function Carta({ carta, onSeleccionar }: Props) {
       onClick={() => onSeleccionar(carta)}>
 
         <img
-          src={carta.imagen}
-          alt={carta.nombre}
+          src={carta.pictureUrl}
+          alt={carta.name}
           className="absolute w-full h-full object-cover"
         />
 
         <div className="absolute top-2 left-2 bg-red-700 text-white border-2 border-red-400 text-sm font-bold w-6 h-6 flex items-center justify-center rounded-full">
-          {carta.numero}
+          {carta.idCard}
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 p-2 text-center bg-linear-to-t from-gray-900 via-gray-900/80 to-transparent">
           <h3 className="text-white text-md font-bold uppercase truncate">
-            {carta.nombre}
+            {carta.name}
           </h3>
         </div>
       </div>

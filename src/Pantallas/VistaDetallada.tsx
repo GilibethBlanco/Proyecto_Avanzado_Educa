@@ -15,10 +15,10 @@ export default function VistaDetallada({ carta, onCerrar }: Props) {
 
         <div className="flex flex-col items-center">
           <div className="relative w-72 h-96 rounded-lg overflow-hidden border-2 border-slate-600">
-            <img src={carta.imagen} className="w-full h-full object-cover" />
+            <img src={carta.pictureUrl} className="w-full h-full object-cover" />
 
             <div className="absolute top-2 left-2 bg-red-700 text-white w-8 h-8 flex items-center justify-center rounded-full">
-              {carta.numero}
+              {carta.idCard}
             </div>
           </div>
 
@@ -45,14 +45,14 @@ export default function VistaDetallada({ carta, onCerrar }: Props) {
 
         <div className="bg-slate-700 p-6 rounded-xl">
           <h2 className="text-2xl text-white font-bold mb-4">
-            {carta.nombre}
+            {carta.name}
           </h2>
 
           <ul className="text-white space-y-2">
-            <li>Descrpción:  {carta.descripcion}</li>
-            <li>Ataque: {carta.ataque}</li>
-            <li>Defensa: {carta.defensa}</li>
-            <li>Vida: {carta.vida}</li>
+            <li>Descrpción:  {carta.descritption}</li>
+            <li>Ataque: {carta.attack}</li>
+            <li>Defensa: {carta.defense}</li>
+            <li>Vida: {carta.lifePoints}</li>
           </ul>
         </div>
       </div>
