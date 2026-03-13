@@ -63,8 +63,10 @@ export default function VistaMazo() {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-white text-2xl">Cartas</h1>
-
+         <h1 className="text-white text-2xl font-light uppercase tracking-[0.3em] 
+        border-b-2 border-white/30 pb-2 inline-block justify-center mx-auto">
+         MI MAZO DE CARTAS
+          </h1>
         <button
           onClick={() => setCrear(true)}
           className="bg-green-600 text-white w-10 h-10 rounded-full text-xl"
