@@ -3,17 +3,17 @@ import { Trash2, Eye } from "lucide-react";
 
 type Props = {
   carta: CartaTipo;
-  onSeleccionar: (carta: CartaTipo) => void;
+  onVerDetalle: () => void;
+  onEliminar: () => void;
 };
 
-export default function Carta({ carta, onSeleccionar }: Props) {
+export default function Carta({ carta, onVerDetalle, onEliminar }: Props) {
   return (
-    <div
-      className="flex flex-col items-center w-50 transition-transform duration-300 hover:scale-105 cursor-pointer gap-1"
-      
-    >
-      <div className="relative w-full h-80 overflow-hidden rounded-lg shadow-lg border-2 border-gray-700 hover:border-red-500"
-      onClick={() => onSeleccionar(carta)}>
+    <div className="flex flex-col items-center w-50 transition-transform duration-300 hover:scale-105 cursor-pointer gap-1">
+      <div
+        className="relative w-full h-80 overflow-hidden rounded-lg shadow-lg border-2 border-gray-700 hover:border-red-500"
+        onClick={onVerDetalle}
+      >
 
         <img
           src={carta.pictureUrl}
@@ -33,13 +33,25 @@ export default function Carta({ carta, onSeleccionar }: Props) {
       </div>
 
       <div className="flex gap-2 w-full justify-center mt-4">
-        <button className="flex items-center justify-center gap-1 px-2 py-2 bg-red-600 text-white hover:bg-red-800 text-xs font-semibold rounded-lg w-1/2">
-        <Trash2 size={16} />
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onEliminar();
+          }}
+          className="flex items-center justify-center gap-1 px-2 py-2 bg-red-600 text-white hover:bg-red-800 text-xs font-semibold rounded-lg w-1/2"
+        >
+          <Trash2 size={16} />
           Eliminar
         </button>
 
-        <button className="flex items-center justify-center gap-1 px-2 py-2 bg-blue-600 text-white  hover:bg-blue-800 text-xs font-semibold rounded-lg w-1/2">
-        <Eye size={16} />
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onVerDetalle();
+          }}
+          className="flex items-center justify-center gap-1 px-2 py-2 bg-blue-600 text-white hover:bg-blue-800 text-xs font-semibold rounded-lg w-1/2"
+        >
+          <Eye size={16} />
           Detalles
         </button>
       </div>

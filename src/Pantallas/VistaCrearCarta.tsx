@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { CartaTipo } from "../Componentes/CartaTipo";
 
 type Props = {
-  onCerrar: () => void;
-  onCrear: (carta: CartaTipo) => void;
-  cartas: CartaTipo[]; 
+  onCrear: (carta: Omit<CartaTipo, 'idCard'>) => void;
 };
 
-export default function VistaCrearCarta({ onCerrar, onCrear, cartas }: Props) {
+export default function VistaCrearCarta({ onCrear }: Props) {
+  const navigate = useNavigate();
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagen, setImagen] = useState("");
@@ -73,10 +73,7 @@ export default function VistaCrearCarta({ onCerrar, onCrear, cartas }: Props) {
       vida: "",
     });
 
-    const numeroCarta = cartas.length + 1;
-
     onCrear({
-      idCard: numeroCarta,
       name: nombre,
       descritption: descripcion,
       pictureUrl: imagen,
@@ -85,12 +82,8 @@ export default function VistaCrearCarta({ onCerrar, onCrear, cartas }: Props) {
       lifePoints: vida,
     });
 
-    onCerrar();
+    navigate('/');
   };
-
-  useEffect(() => {
-
-  }, [cartas]);
 
   return (
     <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
@@ -182,7 +175,7 @@ export default function VistaCrearCarta({ onCerrar, onCrear, cartas }: Props) {
 
         <div className="flex justify-end gap-3 mt-6">
           <button
-            onClick={onCerrar}
+            onClick={() => navigate('/')}
             className="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition"
           >
             Cancelar
