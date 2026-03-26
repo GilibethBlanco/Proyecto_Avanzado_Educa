@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 
 type Props = {
   cartas: CartaTipo[];
-  onEliminar: (idCard: number) => void;
+  onEliminar: (idCard: number) => Promise<void>;
 };
 
 export default function VistaMazo({ cartas, onEliminar }: Props) {
@@ -26,10 +26,11 @@ export default function VistaMazo({ cartas, onEliminar }: Props) {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-        {cartas.map((carta) => (
+        {cartas.map((carta, index) => (
           <Carta
             key={carta.idCard}
             carta={carta}
+            displayId={index + 1}
             onVerDetalle={() => navigate(`/carta/${carta.idCard}`)}
             onEliminar={() => onEliminar(carta.idCard)}
           />

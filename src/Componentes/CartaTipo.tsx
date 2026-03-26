@@ -5,5 +5,5 @@ export type CartaTipo ={
   attack: number;
   defense: number;
   lifePoints: number;
-  descritption: string;
+  description: string;
 }

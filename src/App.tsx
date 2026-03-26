@@ -1,76 +1,152 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import VistaMazo from './Pantallas/VistaMazo';
 import VistaCrearCarta from './Pantallas/VistaCrearCarta';
 import VistaDetallada from './Pantallas/VistaDetallada';
+import VistaEditar from './VistaEditar';
 import type { CartaTipo } from './Componentes/CartaTipo';
+
+const API_URL = 'https://educapi-v2.onrender.com/card';
+const API_HEADERS = {
+  usersecretpasskey: 'Gili394131CO',
+  'Content-Type': 'application/json',
+};
 
 function App() {
   const [cartas, setCartas] = useState<CartaTipo[]>([
-    {
+     {
       idCard: 1,
       name: 'Capitán América',
-      descritption: 'Super soldado con escudo indestructible',
+      description: 'Super soldado con escudo indestructible',
       pictureUrl:
         'https://cuadrosyretablos.com/wp-content/uploads/2022/08/cuadro-decorativo-universo-marvel-capitan-america.jpg',
       attack: 80,
       defense: 80,
       lifePoints: 90,
     },
-    {
-      idCard: 2,
-      name: 'Iron Man',
-      descritption: 'Genio millonario con armadura tecnológica',
-      pictureUrl:
-        'https://i.pinimg.com/736x/1f/19/0b/1f190b0e9b4f44cf99777ea25c48a159.jpg',
-      attack: 85,
-      defense: 90,
-      lifePoints: 85,
-    },
-    {
-      idCard: 3,
-      name: 'Black Widow',
-      descritption: 'Espía maestra',
-      pictureUrl:
-        'https://4kwallpapers.com/images/wallpapers/black-widow-scarlett-johansson-black-background-2020-movies-2560x2560-2705.jpg',
-      attack: 85,
-      defense: 90,
-      lifePoints: 85,
-    },
-    {
-      idCard: 4,
-      name: 'Bruja Escarlata',
-      descritption: 'Mutante con habilidades para manipular la energía',
-      pictureUrl:
-        'https://www.smashmexico.com.mx/wp-content/uploads/2020/11/Avengers-Bruja-Escarlata-Scarlet-Witch-Historia-de-Marvel-poster.jpg',
-      attack: 80,
-      defense: 80,
-      lifePoints: 90,
-    },
-    {
-      idCard: 5,
-      name: 'Spider-Man',
-      descritption: 'Adolescente mordido por una araña',
-      pictureUrl:
-        'https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2025%2F02%2F24%2Ftom-holland-spider-man-4-receives-delayed-release-july-2026-date-001.jpg?q=75&w=800&cbr=1&fit=max.jpg',
-      attack: 80,
-      defense: 80,
-      lifePoints: 90,
-    },
+     
   ]);
 
-  const handleCrear = (nuevaCarta: Omit<CartaTipo, 'idCard'>) => {
-    setCartas((prevCartas) => {
-      const maxId = prevCartas.reduce((max, carta) => Math.max(max, carta.idCard), 0);
-      const nextId = maxId + 1;
+  const normalizarCartaAPI = (item: any): CartaTipo => ({
+    idCard: item.idCard,
+    name: item.name,
+    description: item.description || item.description || '',
+    pictureUrl: item.pictureUrl,
+    attack: item.attack,
+    defense: item.defense,
+    lifePoints: item.lifePoints,
+  });
 
-      return [...prevCartas, { idCard: nextId, ...nuevaCarta }];
-    });
+  const getCartas = async () => {
+    try {
+      const respuesta = await fetch(API_URL, {
+        method: 'GET',
+        headers: API_HEADERS,
+      });
+      if (!respuesta.ok) {
+        throw new Error(`GET /card failed ${respuesta.status}`);
+      }
+      const objeto = await respuesta.json();
+      const apiCartas = Array.isArray(objeto.data) ? objeto.data : [];
+      const cartasMapeadas = apiCartas.map(normalizarCartaAPI);
+      const cartasOrdenadas = cartasMapeadas.sort((a: CartaTipo, b: CartaTipo) => a.idCard - b.idCard);
+      setCartas(cartasOrdenadas);
+
+    return;
+    } catch (error) {
+      console.error('Error cargando cartas:', error);
+    }
+   };
+ 
+  useEffect(() => {
+    getCartas();
+  }, []);
+
+
+  const handleCrear = async (nuevaCarta: Omit<CartaTipo, 'idCard'>) => {
+    try {
+      const respuesta = await fetch(API_URL, {
+        method: 'POST',
+        headers: API_HEADERS,
+        body: JSON.stringify({
+          name: nuevaCarta.name,
+          description: nuevaCarta.description,
+          attack: nuevaCarta.attack,
+          defense: nuevaCarta.defense,
+          lifePoints: nuevaCarta.lifePoints,
+          pictureUrl: nuevaCarta.pictureUrl,
+          attributes: {},
+        }),
+      });
+
+      if (!respuesta.ok) {
+        const errorText = await respuesta.text();
+        throw new Error(`POST /card failed: ${respuesta.status} ${errorText}`);
+      }
+
+      const creado = await respuesta.json();
+      const cartaAPI = normalizarCartaAPI(creado);
+      setCartas((prevCartas) => [...prevCartas, cartaAPI]);
+    } catch (error) {
+      console.error('Error creando carta:', error);
+      window.alert('No se pudo crear la carta en el servidor (ver consola).');
+    }
   };
 
-  const handleEliminar = (idCard: number) => {
-    setCartas((prevCartas) => prevCartas.filter((c) => c.idCard !== idCard));
+  const handleEliminar = async (idCard: number) => {
+    try {
+      const respuesta = await fetch(`${API_URL}/${idCard}`, {
+        method: 'DELETE',
+        headers: {
+  usersecretpasskey: 'Gili394131CO',
+}
+      });
+
+      if (!respuesta.ok) {
+        const errorText = await respuesta.text();
+        throw new Error(`DELETE /card/${idCard} failed: ${respuesta.status} ${errorText}`);
+      }
+
+      setCartas((prevCartas) => prevCartas.filter((c) => c.idCard !== idCard));
+    } catch (error) {
+      console.error('Error eliminando carta:', error);
+      window.alert('No se pudo eliminar la carta en el servidor (ver consola).');
+    }
+  };
+
+  const handleEditar = async (idCard: number, cartaEditada: Omit<CartaTipo, 'idCard'>) => {
+    try {
+      const respuesta = await fetch(`${API_URL}/${idCard}`, {
+        method: 'PATCH',
+        headers: API_HEADERS,
+        body: JSON.stringify({
+          name: cartaEditada.name,
+          description: cartaEditada.description,
+          attack: cartaEditada.attack,
+          defense: cartaEditada.defense,
+          lifePoints: cartaEditada.lifePoints,
+          pictureUrl: cartaEditada.pictureUrl,
+        }),
+      });
+
+      if (!respuesta.ok) {
+        const errorText = await respuesta.text();
+        throw new Error(`PATCH /card/${idCard} failed: ${respuesta.status} ${errorText}`);
+      }
+
+      await respuesta.json();
+      // si es necesario, usar datos del servidor, aquí está la llamada, pero artefactos de UI actuales ya actualizan localmente.
+
+      setCartas((prevCartas) =>
+        prevCartas.map((carta) =>
+          carta.idCard === idCard ? { ...carta, ...cartaEditada } : carta
+        )
+      );
+    } catch (error) {
+      console.error('Error editando carta:', error);
+      window.alert('No se pudo editar la carta en el servidor (ver consola).');
+    }
   };
 
   return (
@@ -85,6 +161,7 @@ function App() {
             alt="Logo Marvel"
             className="h-30 mb-2 object-contain justify-center mx-auto"
           />
+
         </header>
 
         <Routes>
@@ -93,6 +170,10 @@ function App() {
           <Route
             path="/carta/:id"
             element={<VistaDetallada cartas={cartas} onEliminar={handleEliminar} />}
+          />
+          <Route
+            path="/editar/:id"
+            element={<VistaEditar cartas={cartas} onEditar={handleEditar} />}
           />
         </Routes>
       </div>

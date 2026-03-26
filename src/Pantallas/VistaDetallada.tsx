@@ -4,13 +4,15 @@ import { Trash2, Pencil, X } from "lucide-react";
 
 type Props = {
   cartas: CartaTipo[];
-  onEliminar: (idCard: number) => void;
+  onEliminar: (idCard: number) => Promise<void>;
 };
 
 export default function VistaDetallada({ cartas, onEliminar }: Props) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const carta = cartas.find((c) => c.idCard === Number(id));
+  const carta = cartas.find((c) => c.idCard == Number(id));
+  const cartaIndex = cartas.findIndex((c) => c.idCard == Number(id));
+  const displayId = cartaIndex >= 0 ? cartaIndex + 1 : carta?.idCard;
 
   if (!carta) {
     return (
@@ -29,14 +31,14 @@ export default function VistaDetallada({ cartas, onEliminar }: Props) {
             <img src={carta.pictureUrl} className="w-full h-full object-cover" />
 
             <div className="absolute top-2 left-2 bg-red-700 text-white w-8 h-8 flex items-center justify-center rounded-full">
-              {carta.idCard}
+              {displayId}
             </div>
           </div>
 
       <div className="flex gap-2 w-full justify-center mt-4">
             <button
-            onClick={() => {
-              onEliminar(carta.idCard);
+            onClick={async () => {
+              await onEliminar(carta.idCard);
               navigate('/');
             }}
             className="flex items-center justify-center gap-1 px-4 py-2 bg-red-600 text-white  hover:bg-red-800 rounded-lg"
@@ -47,7 +49,7 @@ export default function VistaDetallada({ cartas, onEliminar }: Props) {
 
           <button
             onClick={() => {
-             
+              navigate(`/editar/${carta.idCard}`);
             }}
             className="flex items-center justify-center gap-1 px-4 py-2 bg-blue-600 text-white  hover:bg-blue-800 rounded-lg"
           >
@@ -71,7 +73,7 @@ export default function VistaDetallada({ cartas, onEliminar }: Props) {
           </h2>
 
           <ul className="text-white space-y-2">
-            <li>Descrpción:  {carta.descritption}</li>
+            <li>Descripción: {carta.description}</li>
             <li>Ataque: {carta.attack}</li>
             <li>Defensa: {carta.defense}</li>
             <li>Vida: {carta.lifePoints}</li>

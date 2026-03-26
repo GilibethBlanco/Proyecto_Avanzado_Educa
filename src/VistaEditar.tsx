@@ -1,13 +1,17 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import type { CartaTipo } from "../Componentes/CartaTipo";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import type { CartaTipo } from "./Componentes/CartaTipo";
 
 type Props = {
-  onCrear: (carta: Omit<CartaTipo, 'idCard'>) => Promise<void>;
+  cartas: CartaTipo[];
+  onEditar: (idCard: number, cartaEditada: Omit<CartaTipo, 'idCard'>) => Promise<void>;
 };
 
-export default function VistaCrearCarta({ onCrear }: Props) {
+export default function VistaEditar({ cartas, onEditar }: Props) {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const carta = cartas.find((c) => c.idCard == Number(id));
+
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagen, setImagen] = useState("");
@@ -23,7 +27,26 @@ export default function VistaCrearCarta({ onCrear }: Props) {
     vida: "",
   });
 
-  const handleCrear = async () => {
+  useEffect(() => {
+    if (carta) {
+      setNombre(carta.name);
+      setDescripcion(carta.description);
+      setImagen(carta.pictureUrl);
+      setAtaque(carta.attack);
+      setDefensa(carta.defense);
+      setVida(carta.lifePoints);
+    }
+  }, [carta]);
+
+  if (!carta) {
+    return (
+      <div className="p-4 text-center text-white">
+        Carta no encontrada. <button className="underline" onClick={() => navigate('/')}>Volver al mazo</button>
+      </div>
+    );
+  }
+
+  const handleEditar = async () => {
     let valid = true;
     const newErrores = {
       nombre: "",
@@ -61,7 +84,7 @@ export default function VistaCrearCarta({ onCrear }: Props) {
 
     if (!valid) {
       setErrores(newErrores);
-      return; 
+      return;
     }
 
     setErrores({
@@ -74,7 +97,7 @@ export default function VistaCrearCarta({ onCrear }: Props) {
     });
 
     try {
-      await onCrear({
+      await onEditar(carta.idCard, {
         name: nombre,
         description: descripcion,
         pictureUrl: imagen,
@@ -84,15 +107,15 @@ export default function VistaCrearCarta({ onCrear }: Props) {
       });
       navigate('/');
     } catch (error) {
-      console.error('Error en onCrear:', error);
-      window.alert('No se pudo crear la carta. Intenta nuevamente.');
+      console.error('Error en onEditar:', error);
+      window.alert('No se pudo editar la carta. Intenta nuevamente.');
     }
   };
-  
+
   return (
     <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
       <div className="bg-slate-800 p-6 rounded-xl w-full max-w-xl shadow-xl">
-        <h2 className="text-white text-2xl font-bold mb-6 text-center">Crear Carta</h2>
+        <h2 className="text-white text-2xl font-bold mb-6 text-center">Editar Carta</h2>
 
         <div className="flex flex-col gap-4">
           <div>
@@ -186,10 +209,10 @@ export default function VistaCrearCarta({ onCrear }: Props) {
           </button>
 
           <button
-            onClick={handleCrear}
-            className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-800 transition"
+            onClick={handleEditar}
+            className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-800 transition"
           >
-            Crear
+            Guardar Cambios
           </button>
         </div>
       </div>
