@@ -136,7 +136,7 @@ function App() {
       }
 
       await respuesta.json();
-      // si es necesario, usar datos del servidor, aquí está la llamada, pero artefactos de UI actuales ya actualizan localmente.
+     
 
       setCartas((prevCartas) =>
         prevCartas.map((carta) =>
