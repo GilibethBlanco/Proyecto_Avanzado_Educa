@@ -11,10 +11,20 @@ type Props = {
 export default function Carta({ carta, displayId, onVerDetalle, onEliminar }: Props) {
   const labelId = displayId ?? carta.idCard;
 
+const esPoderosa = carta.attack >= 80;
+
+  const colorBordePoderosa = "border-red-600";
+  const brilloPoderosa = "hover:shadow-[0_0_20px_rgba(220,38,38,0.8)] hover:border-red-400";
+  const colorBordeNormal = "border-blue-600";
+  const brilloNormal = "hover:shadow-[0_0_20px_rgba(37,99,235,0.8)] hover:border-blue-400";
+
+  const clasesEspeciales = esPoderosa 
+    ? `${colorBordePoderosa} ${brilloPoderosa}` 
+    : `${colorBordeNormal} ${brilloNormal}`;
   return (
     <div className="flex flex-col items-center w-50 transition-transform duration-300 hover:scale-105 cursor-pointer gap-1">
       <div
-        className="relative w-full h-80 overflow-hidden rounded-lg shadow-lg border-2 border-gray-700 hover:border-red-500"
+        className={`relative w-full h-80 overflow-hidden rounded-lg shadow-lg border-2 ${clasesEspeciales}`}
         onClick={onVerDetalle}
       >
 

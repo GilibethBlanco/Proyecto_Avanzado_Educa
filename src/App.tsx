@@ -14,19 +14,8 @@ const API_HEADERS = {
 };
 
 function App() {
-  const [cartas, setCartas] = useState<CartaTipo[]>([
-     {
-      idCard: 1,
-      name: 'Capitán América',
-      description: 'Super soldado con escudo indestructible',
-      pictureUrl:
-        'https://cuadrosyretablos.com/wp-content/uploads/2022/08/cuadro-decorativo-universo-marvel-capitan-america.jpg',
-      attack: 80,
-      defense: 80,
-      lifePoints: 90,
-    },
-     
-  ]);
+  const [cartas, setCartas] = useState<CartaTipo[]>([]);
+  const [cargando, setCargando] = useState(true);
 
   const normalizarCartaAPI = (item: any): CartaTipo => ({
     idCard: item.idCard,
@@ -38,26 +27,36 @@ function App() {
     lifePoints: item.lifePoints,
   });
 
+
   const getCartas = async () => {
+    setCargando(true);
+    const tiempoInicio = Date.now();
+
     try {
-      const respuesta = await fetch(API_URL, {
-        method: 'GET',
-        headers: API_HEADERS,
-      });
-      if (!respuesta.ok) {
-        throw new Error(`GET /card failed ${respuesta.status}`);
-      }
+      const respuesta = await fetch(API_URL, { method: 'GET', headers: API_HEADERS });
+      
+      if (!respuesta.ok) throw new Error(`Error: ${respuesta.status}`);
+      
       const objeto = await respuesta.json();
       const apiCartas = Array.isArray(objeto.data) ? objeto.data : [];
-      const cartasMapeadas = apiCartas.map(normalizarCartaAPI);
-      const cartasOrdenadas = cartasMapeadas.sort((a: CartaTipo, b: CartaTipo) => a.idCard - b.idCard);
+      const cartasOrdenadas = apiCartas
+        .map(normalizarCartaAPI)
+        .sort((a: CartaTipo, b: CartaTipo) => a.idCard - b.idCard);
+      
       setCartas(cartasOrdenadas);
 
-    return;
+      const tiempoTranscurrido = Date.now() - tiempoInicio;
+      const esperaMinima = 1000; 
+      const delayRestante = Math.max(0, esperaMinima - tiempoTranscurrido);
+
+      setTimeout(() => {
+        setCargando(false);
+      }, delayRestante);
+
     } catch (error) {
-      console.error('Error cargando cartas:', error);
+      console.error('Error de conexión:', error);
     }
-   };
+  };
  
   useEffect(() => {
     getCartas();
@@ -164,18 +163,33 @@ function App() {
 
         </header>
 
-        <Routes>
-          <Route path="/" element={<VistaMazo cartas={cartas} onEliminar={handleEliminar} />} />
-          <Route path="/crear" element={<VistaCrearCarta onCrear={handleCrear} />} />
-          <Route
-            path="/carta/:id"
-            element={<VistaDetallada cartas={cartas} onEliminar={handleEliminar} />}
-          />
-          <Route
-            path="/editar/:id"
-            element={<VistaEditar cartas={cartas} onEditar={handleEditar} />}
-          />
-        </Routes>
+        {cargando ? (
+   
+            <div className="flex flex-col items-center justify-center p-20 gap-8 h-[60vh]">
+  
+                <div className="relative flex items-center justify-center h-24 w-24 mb-10">
+              
+                  <div className="absolute inset-0 rounded-full bg-cyan-400 opacity-20 blur-xl animate-pulse"></div>
+                  <div className="absolute inset-0 rounded-full border-4 border-slate-600 border-t-cyan-300 animate-spin"></div>
+                  <div className="h-16 w-16 rounded-full bg-white flex items-center justify-center shadow-[0_0_30px_10px_rgba(34,211,238,0.8)]">
+                  <div className="w-0 h-0 border-l-15 border-r-15 border-b-26 border-l-transparent border-r-transparent border-b-cyan-100 rotate-180 drop-shadow-[0_0_5px_rgba(255,255,255,1)]"></div>
+                  </div>
+                </div>
+
+                <p className="text-4xl font-extrabold text-center uppercase tracking-widest animate-pulse
+                             text-transparent bg-clip-text bg-linear-to-r from-red-600 via-yellow-500 to-red-600
+                             drop-shadow-[0_0_15px_rgba(255,0,0,0.8)]">
+                    Buscando las cartas... <br /> por favor espera
+                </p>
+            </div>
+        ) : (
+            <Routes>
+                <Route path="/" element={<VistaMazo cartas={cartas} onEliminar={handleEliminar} />} />
+                <Route path="/crear" element={<VistaCrearCarta onCrear={handleCrear} />} />
+                <Route path="/carta/:id" element={<VistaDetallada cartas={cartas} onEliminar={handleEliminar} />} />
+                <Route path="/editar/:id" element={<VistaEditar cartas={cartas} onEditar={handleEditar} />} />
+            </Routes>
+        )}
       </div>
     </div>
   );
