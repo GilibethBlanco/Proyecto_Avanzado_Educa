@@ -17,6 +17,31 @@ function App() {
   const [cartas, setCartas] = useState<CartaTipo[]>([]);
   const [cargando, setCargando] = useState(true);
 
+// Dentro de function App() { ... }
+const [seleccionadas, setSeleccionadas] = useState<CartaTipo[]>([]);
+
+const onSeleccionar = (carta: CartaTipo) => {
+  setSeleccionadas((prev) => {
+    // 1. Buscamos si la carta ya estaba seleccionada
+    const yaEstaSeleccionada = prev.find((c) => c.idCard === carta.idCard);
+
+    if (yaEstaSeleccionada) {
+      // DESELECCIONAR: Si ya estaba, la quitamos de la lista
+      return prev.filter((c) => c.idCard !== carta.idCard);
+    } else {
+      // SELECCIONAR: Si no estaba, intentamos agregarla
+      
+      // Control de Máximo: Si ya hay 2 cartas, no hacemos nada (ignora el hover)
+      if (prev.length >= 2) {
+        return prev; 
+      }
+      
+      // Agregamos la nueva carta a la lista
+      return [...prev, carta];
+    }
+  });
+};
+
   const normalizarCartaAPI = (item: any): CartaTipo => ({
     idCard: item.idCard,
     name: item.name,
@@ -160,6 +185,15 @@ function App() {
             alt="Logo Marvel"
             className="h-30 mb-2 object-contain justify-center mx-auto"
           />
+{seleccionadas.length === 2 && (
+  <button 
+    onClick={() => alert("¡A PELEAR!")}
+    className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-red-600 text-white font-black px-10 py-4 rounded-full z-50 animate-bounce shadow-2xl border-2 border-white"
+  >
+    ⚔️ ¡INICIAR PELEA!
+  </button>
+)}
+
 
         </header>
 
@@ -184,7 +218,7 @@ function App() {
             </div>
         ) : (
             <Routes>
-                <Route path="/" element={<VistaMazo cartas={cartas} onEliminar={handleEliminar} />} />
+                <Route path="/" element={<VistaMazo cartas={cartas} onEliminar={handleEliminar} onSeleccionar={onSeleccionar} seleccionadas={seleccionadas} algunHeroeSeleccionado={false} />} />
                 <Route path="/crear" element={<VistaCrearCarta onCrear={handleCrear} />} />
                 <Route path="/carta/:id" element={<VistaDetallada cartas={cartas} onEliminar={handleEliminar} />} />
                 <Route path="/editar/:id" element={<VistaEditar cartas={cartas} onEditar={handleEditar} />} />

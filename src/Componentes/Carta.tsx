@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import type { CartaTipo } from "../Componentes/CartaTipo";
 import { Trash2, Eye } from "lucide-react";
 
@@ -6,12 +7,51 @@ type Props = {
   displayId?: number;
   onVerDetalle: () => void;
   onEliminar: () => void;
+  onSeleccionar: (carta: CartaTipo) => void; 
+  seleccionadas: boolean; 
+  algunHeroeSeleccionado: boolean;
 };
 
-export default function Carta({ carta, displayId, onVerDetalle, onEliminar }: Props) {
+export default function Carta({ carta, displayId, onSeleccionar, algunHeroeSeleccionado, seleccionadas, onVerDetalle, onEliminar }: Props) {
   const labelId = displayId ?? carta.idCard;
 
-const esPoderosa = carta.attack >= 80;
+const timerRef = useRef<any>(null);
+  const [estaListo, setEstaListo] = useState(false);
+
+ 
+  useEffect(() => {
+    const seguro = setTimeout(() => setEstaListo(true), 500);
+    return () => {
+      clearTimeout(seguro);
+      clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  const iniciarCarga = () => {
+    if (!estaListo) return; 
+
+    timerRef.current = setTimeout(() => {
+      onSeleccionar(carta);
+    }, 5000); 
+  };
+
+  const cancelarCarga = () => {
+    clearTimeout(timerRef.current);
+  };
+
+  let estiloCarta = "w-full h-80 object-cover rounded-lg cursor-pointer transition-all duration-500 ";
+
+  if (seleccionadas) {
+   
+    estiloCarta += "scale-110 shadow-[0_0_30px_rgba(34,197,94,0.7)] border-4 border-green-500 grayscale-0 z-20";
+  } else if (algunHeroeSeleccionado) {
+ 
+    estiloCarta += "grayscale-[100%] opacity-40 hover:grayscale-0 hover:opacity-100 scale-95 z-0";
+  } else {
+    
+    estiloCarta += "grayscale hover:grayscale-0 scale-100 hover:scale-102 z-10";
+  }
+const esPoderosa = carta.attack >= 75;
 
   const colorBordePoderosa = "border-red-600";
   const brilloPoderosa = "hover:shadow-[0_0_20px_rgba(220,38,38,0.8)] hover:border-red-400";
@@ -39,6 +79,37 @@ const esPoderosa = carta.attack >= 80;
   
     className="absolute w-full h-full object-cover rounded-xl" 
   />
+
+<div 
+      className="relative group"
+      onMouseEnter={iniciarCarga}
+      onMouseLeave={cancelarCarga}
+    >
+   
+      {!seleccionadas && (
+        <div className="absolute top-0 left-0 h-1 bg-green-500/50 transition-all duration-5000 w-0 group-hover:w-full z-30" />
+      )}
+
+      <img 
+        src={carta.pictureUrl} 
+        alt={carta.name}
+        className={estiloCarta}
+        onClick={onVerDetalle} 
+      />
+     
+      {seleccionadas && (
+        <div className="absolute top-4 right-4 bg-green-500 text-white rounded-full p-2 z-30 shadow-lg animate-pulse">
+          ✅
+        </div>
+      )}
+
+      <div className="p-2">
+        <h2 className={`font-bold mt-2 text-center ${seleccionadas ? 'text-green-400' : 'text-white'}`}>
+          {carta.name}
+        </h2>
+      </div>
+      </div>
+  
 
         <div className="absolute top-2 left-2 bg-red-700 text-white border-2 border-red-400 text-sm font-bold w-6 h-6 flex items-center justify-center rounded-full">
           {labelId}
