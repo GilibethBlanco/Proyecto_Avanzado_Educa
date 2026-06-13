@@ -28,6 +28,30 @@ export default function VistaMazo({ cartas, onEliminar, onSeleccionar, algunHero
         </Link>
       </div>
 
+      {seleccionadas.length === 2 && (
+  <div className="flex justify-center mb-8 animate-bounce">
+    <button
+      onClick={() => {
+        // Extraemos los IDs de los dos héroes elegidos
+        const id1 = seleccionadas[0].idCard;
+        const id2 = seleccionadas[1].idCard;
+        
+        // Viajamos a la arena pasándole los IDs por la URL
+        navigate(`/CampoBatalla?p1=${id1}&p2=${id2}`);
+      }}
+      className="relative px-8 py-4 rounded-xl bg-linear-to-r from-amber-500 via-orange-600 to-red-600 
+        text-white font-black text-xl uppercase tracking-widest
+        border-2 border-yellow-400/60
+        shadow-[0_0_30px_rgba(234,179,8,0.4)]
+        hover:shadow-[0_0_50px_rgba(234,179,8,0.7)]
+        hover:scale-105 active:scale-95 transition-all duration-300
+      "
+    >
+      💥 ¡INICIAR BATALLA! 💥
+    </button>
+  </div>
+)}
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
        {cartas.map((carta, index) => (
    <Carta 
@@ -41,6 +65,7 @@ export default function VistaMazo({ cartas, onEliminar, onSeleccionar, algunHero
     seleccionadas={seleccionadas.some(c => c.idCard === carta.idCard)} 
   />
 ))}
+
       </div>
     </div>
   );

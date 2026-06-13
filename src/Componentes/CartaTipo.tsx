@@ -1,4 +1,5 @@
 export type CartaTipo ={
+  id: number;
   idCard: number;
   name: string;
   pictureUrl: string;

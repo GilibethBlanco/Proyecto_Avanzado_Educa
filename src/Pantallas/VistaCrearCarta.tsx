@@ -100,6 +100,7 @@ export default function VistaCrearCarta({ onCrear }: Props) {
         attack: ataque,
         defense: defensa,
         lifePoints: vida,
+        id: 0
       });
       navigate('/');
     } catch (error) {

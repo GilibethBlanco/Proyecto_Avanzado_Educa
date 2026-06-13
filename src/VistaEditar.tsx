@@ -104,6 +104,7 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
         attack: ataque,
         defense: defensa,
         lifePoints: vida,
+        id: 0
       });
       navigate('/');
     } catch (error) {
@@ -113,9 +114,25 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-      <div className="bg-slate-800 p-6 rounded-xl w-full max-w-xl shadow-xl">
-        <h2 className="text-white text-2xl font-bold mb-6 text-center">Editar Carta</h2>
+   <div className="relative w-full max-w-4xl p-8 rounded-2xl 
+  bg-slate-900 border-2 border-red-500/50
+  shadow-[0_0_40px_rgba(239,68,68,0.25)] 
+  hover:shadow-[0_0_60px_rgba(239,68,68,0.4)] 
+  transition-all duration-700 ease-in-out
+  mx-auto my-6
+">
+
+  <div className="absolute top-0 left-0 w-4 h-4 border-t-4 border-l-4 border-red-500 rounded-tl-lg"></div>
+  <div className="absolute top-0 right-0 w-4 h-4 border-t-4 border-r-4 border-red-500 rounded-tr-lg"></div>
+  <div className="absolute bottom-0 left-0 w-4 h-4 border-b-4 border-l-4 border-red-500 rounded-bl-lg"></div>
+  <div className="absolute bottom-0 right-0 w-4 h-4 border-b-4 border-r-4 border-red-500 rounded-br-lg"></div>
+
+  <div className="text-center mb-8">
+    <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-red-500 to-rose-600 tracking-wider uppercase">
+      ⚙️ Modificar Atributos del Héroe ⚔️
+    </h2>
+    <p className="text-slate-400 text-sm mt-1">Altera las estadísticas actuales de tu carta</p>
+  </div>
 
         <div className="flex flex-col gap-4">
           <div>
@@ -157,6 +174,9 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
 
           <div className="flex space-x-4">
             <div className="w-1/3">
+             <label className="block text-gray-300 text-sm font-bold mb-2">
+               ⚔️ Ataque (Máx 80)
+               </label>
               <input
                 type="number"
                 placeholder="Ataque"
@@ -164,6 +184,7 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
                 onChange={(e) => setAtaque(+e.target.value)}
                 className="w-full px-4 py-2 rounded-lg bg-slate-700 text-white placeholder-gray-400 appearance-none focus:outline-none focus:ring-2 focus:ring-red-500"
                 min="1"
+                max="80"
               />
               {errores.ataque && (
                 <div className="text-red-500 text-sm mt-1">{errores.ataque}</div>
@@ -171,6 +192,9 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
             </div>
 
             <div className="w-1/3">
+             <label className="block text-gray-300 text-sm font-bold mb-2">
+             🛡️ Defensa (Máx 80)
+              </label>
               <input
                 type="number"
                 placeholder="Defensa"
@@ -178,6 +202,7 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
                 onChange={(e) => setDefensa(+e.target.value)}
                 className="w-full px-4 py-2 rounded-lg bg-slate-700 text-white placeholder-gray-400 appearance-none focus:outline-none focus:ring-2 focus:ring-red-500"
                 min="1"
+                max="80"
               />
               {errores.defensa && (
                 <div className="text-red-500 text-sm mt-1">{errores.defensa}</div>
@@ -185,6 +210,9 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
             </div>
 
             <div className="w-1/3">
+              <label className="block text-gray-300 text-sm font-bold mb-2">
+              ❤️ Vida (Máx 250)
+              </label>
               <input
                 type="number"
                 placeholder="Vida"
@@ -192,6 +220,7 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
                 onChange={(e) => setVida(+e.target.value)}
                 className="w-full px-4 py-2 rounded-lg bg-slate-700 text-white placeholder-gray-400 appearance-none focus:outline-none focus:ring-2 focus:ring-red-500"
                 min="1"
+                max="250"
               />
               {errores.vida && (
                 <div className="text-red-500 text-sm mt-1">{errores.vida}</div>
@@ -201,21 +230,24 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
         </div>
 
         <div className="flex justify-end gap-3 mt-6">
-          <button
-            onClick={() => navigate('/')}
-            className="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition"
-          >
-            Cancelar
-          </button>
+       
+    <button
+      type="button"
+      onClick={() => navigate('/')} 
+      className="px-4 py-2 rounded-lg bg-slate-700 text-gray-200 hover:bg-slate-600 hover:text-white transition font-medium"
+    >
+      Cancelar
+    </button>
 
-          <button
-            onClick={handleEditar}
-            className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-800 transition"
-          >
-            Guardar Cambios
-          </button>
+    <button
+      type="button"
+      onClick={handleEditar} 
+      className="w-full sm:w-auto bg-linear-to-r px-4 py-2 rounded-lg  from-red-500 to-red-600 text-white font-bold shadow-lg hover:from-red-400 hover:to-red-500 hover:shadow-red-500/30 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
+    >
+      Guardar Cambios
+    </button>
         </div>
       </div>
-    </div>
+    
   );
 }
