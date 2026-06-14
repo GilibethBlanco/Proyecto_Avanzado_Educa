@@ -1,7 +1,7 @@
 ﻿import { Link, useNavigate } from "react-router-dom";
 import Carta from "../Componentes/Carta";
 import type { CartaTipo } from "../Componentes/CartaTipo";
-import { Plus } from "lucide-react";
+import { Plus, Swords } from "lucide-react";
 
 type Props = {
   cartas: CartaTipo[];
@@ -22,32 +22,33 @@ export default function VistaMazo({ cartas, onEliminar, onSeleccionar, algunHero
         </h1>
         <Link
           to="/crear"
-          className="flex items-center justify-center bg-green-600 text-white w-10 h-10 rounded-full text-xl"
+          className="flex items-center justify-center bg-blue-600 text-white w-10 h-10 rounded-full text-xl"
         >
           <Plus size={24} />
         </Link>
       </div>
 
-      {seleccionadas.length === 2 && (
-  <div className="flex justify-center mb-8 animate-bounce">
+ {seleccionadas.length === 2 && (
+  <div className="flex justify-center my-8 w-full">
     <button
       onClick={() => {
-        // Extraemos los IDs de los dos héroes elegidos
         const id1 = seleccionadas[0].idCard;
         const id2 = seleccionadas[1].idCard;
-        
-        // Viajamos a la arena pasándole los IDs por la URL
         navigate(`/CampoBatalla?p1=${id1}&p2=${id2}`);
       }}
-      className="relative px-8 py-4 rounded-xl bg-linear-to-r from-amber-500 via-orange-600 to-red-600 
-        text-white font-black text-xl uppercase tracking-widest
-        border-2 border-yellow-400/60
-        shadow-[0_0_30px_rgba(234,179,8,0.4)]
-        hover:shadow-[0_0_50px_rgba(234,179,8,0.7)]
+     
+      className="flex items-center justify-center gap-4 px-10 py-5 rounded-xl 
+        bg-slate-950 border-2 border-emerald-500
         hover:scale-105 active:scale-95 transition-all duration-300
-      "
+        select-none group"
     >
-      💥 ¡INICIAR BATALLA! 💥
+      <Swords size={28} className="text-emerald-500 group-hover:rotate-12 transition-transform duration-300" />
+      
+      <span className="font-black text-2xl uppercase tracking-widest text-amber-100">
+        INICIAR BATALLA
+      </span>
+
+      <Swords size={28} className="text-emerald-500 scale-x-[-1] group-hover:-rotate-12 transition-transform duration-300" />
     </button>
   </div>
 )}

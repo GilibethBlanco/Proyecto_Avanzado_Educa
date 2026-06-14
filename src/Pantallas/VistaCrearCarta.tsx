@@ -47,9 +47,6 @@ export default function VistaCrearCarta({ onCrear }: Props) {
       valid = false;
     }
 
-    // --- NUEVAS VALIDACIONES CON MÁXIMOS Y MÍNIMOS ---
-
-    // Validación de Ataque (Mínimo 1, Máximo 80)
     if (ataque <= 0) {
       newErrores.ataque = "El ataque debe ser mayor a 0.";
       valid = false;
@@ -58,7 +55,6 @@ export default function VistaCrearCarta({ onCrear }: Props) {
       valid = false;
     }
 
-    // Validación de Defensa (Mínimo 1, Máximo 80)
     if (defensa <= 0) {
       newErrores.defensa = "La defensa debe ser mayor a 0.";
       valid = false;
@@ -67,16 +63,13 @@ export default function VistaCrearCarta({ onCrear }: Props) {
       valid = false;
     }
 
-    // Validación de Vida (Mínimo 1, Máximo 250)
-    if (vida <= 0) {
-      newErrores.vida = "La vida debe ser mayor a 0.";
+    if (vida < 250) {
+      newErrores.vida = "La vida mínima permitida es 250.";
       valid = false;
-    } else if (vida > 250) {
-      newErrores.vida = "La vida máxima permitida es 250.";
+    } else if (vida > 500) {
+      newErrores.vida = "La vida máxima permitida es 500.";
       valid = false;
     }
-
-    // -------------------------------------------------
 
     if (!valid) {
       setErrores(newErrores);
@@ -121,14 +114,12 @@ export default function VistaCrearCarta({ onCrear }: Props) {
       transition-all duration-700 ease-in-out
       animate-pulse-[0.9]
     ">
-      
-      {/* Esquinas decorativas estilo Marco de Imagen de Videojuego */}
+    
       <div className="absolute top-0 left-0 w-4 h-4 border-t-4 border-l-4 border-cyan-400 rounded-tl-lg"></div>
       <div className="absolute top-0 right-0 w-4 h-4 border-t-4 border-r-4 border-cyan-400 rounded-tr-lg"></div>
       <div className="absolute bottom-0 left-0 w-4 h-4 border-b-4 border-l-4 border-cyan-400 rounded-bl-lg"></div>
       <div className="absolute bottom-0 right-0 w-4 h-4 border-b-4 border-r-4 border-cyan-400 rounded-br-lg"></div>
 
-      {/* TITULO DEL FORMULARIO */}
       <div className="text-center mb-8">
         <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-blue-500 tracking-wider uppercase">
           🛡️ Crear Nueva Carta de Héroe ⚔️
@@ -213,16 +204,16 @@ export default function VistaCrearCarta({ onCrear }: Props) {
 
             <div className="w-1/3">
             <label className="block text-gray-300 text-sm font-bold mb-2">
-              ❤️ Vida (Máx 250)
+              ❤️ Vida (Máx 500)
               </label>
               <input
                 type="number"
-                placeholder="Ej: 150"
+                placeholder="Ej: 250"
                 value={vida}
                 onChange={(e) => setVida(+e.target.value)}
                 className="w-full px-4 py-2 rounded-lg bg-slate-700 text-white placeholder-gray-400 appearance-none focus:outline-none focus:ring-2 focus:ring-red-500"
-                min="1"
-                max="250"
+                min="250"
+                max="500"
               />
               {errores.vida && (
                 <div className="text-red-500 text-sm mt-1">{errores.vida}</div>
@@ -234,13 +225,12 @@ export default function VistaCrearCarta({ onCrear }: Props) {
         <div className="flex justify-end gap-3 mt-6">
         <button
       type="button"
-      onClick={() => navigate('/')} // Si usas react-router, esto te saca de aquí al mazo
+      onClick={() => navigate('/')}
       className="px-4 py-2 rounded-lg bg-slate-700 text-gray-200 hover:bg-slate-600 hover:text-white transition font-medium"
     >
       Cancelar
     </button>
 
-    {/* Tu botón original de Crear (Con su onClick intacto para que funcione) */}
     <button
       type="button"
       onClick={handleCrear}

@@ -42,7 +42,7 @@ export default function VistaDetallada({ cartas, onEliminar }: Props) {
       <div className="relative w-72 h-96 rounded-lg overflow-hidden border-2 border-green-500/30 shadow-lg shadow-black/50">
         <img src={carta.pictureUrl} className="w-full h-full object-cover" alt={carta.name} />
 
-        <div className="absolute top-4 left-4 bg-red-700 text-white border-3 border-red-400 text-sm font-bold w-8 h-8 flex items-center justify-center rounded-full">
+        <div className="absolute top-3 left-3 z-50 bg-slate-950 text-amber-400 border-2 border-amber-500 font-mono text-sm font-black w-8 h-8 flex items-center justify-center rounded-full shadow-md shadow-black/90">
           {displayId}
         </div>
       </div>
@@ -53,7 +53,7 @@ export default function VistaDetallada({ cartas, onEliminar }: Props) {
             await onEliminar(carta.idCard);
             navigate('/');
           }}
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white hover:bg-red-800 rounded-lg transition font-medium shadow-md active:scale-95"
+          className="flex items-center justify-center gap-1.5 py-2.5 bg-slate-100 hover:bg-red-600 text-slate-950 hover:text-white text-xs font-black rounded-xl w-1/2 transition-all duration-200 shadow-md border border-white/20 active:scale-95"
         >
           <Trash2 size={16} />
           Eliminar
@@ -63,7 +63,7 @@ export default function VistaDetallada({ cartas, onEliminar }: Props) {
           onClick={() => {
             navigate(`/editar/${carta.idCard}`);
           }}
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-800 rounded-lg transition font-medium shadow-md active:scale-95"
+          className="flex items-center justify-center gap-1.5 py-2.5 bg-linear-to-b from-amber-400 via-yellow-500 to-amber-600 hover:from-yellow-300 hover:to-amber-500 text-slate-950 text-xs font-black rounded-xl w-1/2 transition-all duration-200 shadow-md shadow-amber-500/10 active:scale-95"
         >
           <Pencil size={16} />
           Editar

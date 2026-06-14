@@ -69,22 +69,35 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
       newErrores.imagen = "La imagen es obligatoria.";
       valid = false;
     }
-    if (ataque <= 0) {
+     if (ataque <= 0) {
       newErrores.ataque = "El ataque debe ser mayor a 0.";
       valid = false;
-    }
-    if (defensa <= 0) {
-      newErrores.defensa = "La defensa debe ser mayor a 0.";
-      valid = false;
-    }
-    if (vida <= 0) {
-      newErrores.vida = "La vida debe ser mayor a 0.";
+    } else if (ataque > 80) {
+      newErrores.ataque = "El ataque máximo permitido es 80.";
       valid = false;
     }
 
+    if (defensa <= 0) {
+      newErrores.defensa = "La defensa debe ser mayor a 0.";
+      valid = false;
+    } else if (defensa > 80) {
+      newErrores.defensa = "La defensa máxima permitida es 80.";
+      valid = false;
+    }
+
+    if (vida < 250) {
+      newErrores.vida = "La vida mínima permitida es 250.";
+      valid = false;
+    } else if (vida > 500) {
+      newErrores.vida = "La vida máxima permitida es 500.";
+      valid = false;
+    }
+
+    // -------------------------------------------------
+
     if (!valid) {
       setErrores(newErrores);
-      return;
+      return; 
     }
 
     setErrores({
@@ -211,7 +224,7 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
 
             <div className="w-1/3">
               <label className="block text-gray-300 text-sm font-bold mb-2">
-              ❤️ Vida (Máx 250)
+              ❤️ Vida (Máx 500)
               </label>
               <input
                 type="number"
@@ -219,8 +232,8 @@ export default function VistaEditar({ cartas, onEditar }: Props) {
                 value={vida}
                 onChange={(e) => setVida(+e.target.value)}
                 className="w-full px-4 py-2 rounded-lg bg-slate-700 text-white placeholder-gray-400 appearance-none focus:outline-none focus:ring-2 focus:ring-red-500"
-                min="1"
-                max="250"
+                min="250"
+                max="500"
               />
               {errores.vida && (
                 <div className="text-red-500 text-sm mt-1">{errores.vida}</div>
