@@ -52,7 +52,7 @@ export default function Carta({
   } else if (algunHeroeSeleccionado) {
     estiloImagen += "grayscale opacity-25 scale-95";
   } else {
-    estiloImagen += "grayscale-[50%] hover:grayscale-0 scale-100 hover:scale-102";
+    estiloImagen += "grayscale-[40%] hover:grayscale-0 scale-100 hover:scale-102";
   }
 
   const esFuerte = carta.attack >= 70;

@@ -28,6 +28,16 @@ export default function VistaMazo({ cartas, onEliminar, onSeleccionar, algunHero
         </Link>
       </div>
 
+      <div className="flex items-center gap-4">
+       <button 
+      onClick={() => navigate('/generar-carta')}
+      className="flex items-center gap-2 px-4 py-2 bg-purple-700 hover:bg-purple-600 border border-purple-500 text-white text-xs font-bold rounded-xl transition-all uppercase tracking-wider"
+     >
+      <span>✨</span> Generar Carta con IA
+      </button>
+      </div>
+      <br />
+
  {seleccionadas.length === 2 && (
   <div className="flex justify-center my-8 w-full">
     <button

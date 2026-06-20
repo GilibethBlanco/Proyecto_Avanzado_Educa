@@ -7,6 +7,7 @@ import VistaDetallada from './Pantallas/VistaDetallada';
 import VistaEditar from './VistaEditar';
 import type { CartaTipo } from './Componentes/CartaTipo';
 import CampoBatalla from './CampoBatalla';
+import GeneradorCartasIA from './Pantallas/GeneradorCartasIA';
 
 const API_URL = 'https://educapi-v2.onrender.com/card';
 const API_HEADERS = {
@@ -207,11 +208,12 @@ const onSeleccionar = (carta: CartaTipo) => {
             </div>
         ) : (
             <Routes>
-                <Route path="/" element={<VistaMazo cartas={cartas} onEliminar={handleEliminar} onSeleccionar={onSeleccionar} seleccionadas={seleccionadas} algunHeroeSeleccionado={false} />} />
+                <Route path="/" element={<VistaMazo cartas={cartas} onEliminar={handleEliminar} onSeleccionar={onSeleccionar} seleccionadas={seleccionadas} algunHeroeSeleccionado={false}  />} />
                 <Route path="/crear" element={<VistaCrearCarta onCrear={handleCrear} />} />
                 <Route path="/carta/:id" element={<VistaDetallada cartas={cartas} onEliminar={handleEliminar} />} />
                 <Route path="/editar/:id" element={<VistaEditar cartas={cartas} onEditar={handleEditar} />} />
                 <Route path="/CampoBatalla" element={<CampoBatalla cartas={cartas} />} />
+                <Route path="/generar-carta" element={<GeneradorCartasIA onCartaGenerada={(nuevaCarta) => {const cartaNormalizada = normalizarCartaAPI(nuevaCarta);setCartas((prev) => [...prev, cartaNormalizada]);}} />} />
             </Routes>
         )}
       </div>
